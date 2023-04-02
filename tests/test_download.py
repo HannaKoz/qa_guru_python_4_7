@@ -33,7 +33,7 @@ response_csv = requests.get(url_csv, allow_redirects=True)
 
 
 def test_download_pdf():
-    with open('dummy.pdf', 'wb') as file_pdf:
+    with open('..\\resources\\dummy.pdf', 'wb') as file_pdf:
         file_pdf.write(response_pdf.content)
 
 
