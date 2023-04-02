@@ -31,7 +31,7 @@ def set_browser():
 
 '''Настройки для скачивания напрямую с web. Файлы сохраняются в проект в папку с файлом теста'''
 
-url_pdf = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+url_pdf = "https://file-examples.com/storage/fef89aabc36429826928b9c/2017/10/file-example_PDF_1MB.pdf"
 url_xlsx = "https://go.microsoft.com/fwlink/?LinkID=521962"
 url_csv = "https://support.staffbase.com/hc/en-us/articles/360007108391-CSV-File-Examples"
 
