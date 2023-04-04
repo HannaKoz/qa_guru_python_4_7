@@ -56,9 +56,12 @@ def download_files(set_browser):
     sleep(5)
 
     yield download_files
-    remove_pdf = os.remove('..\\resources\\dummy.pdf')
-    remove_csv = os.remove('..\\resources\\username.csv')
-    remove_xlsx = os.remove('..\\tests\\Financial Sample.xlsx')
+    # remove_pdf:
+    os.remove('..\\resources\\dummy.pdf')
+    # remove_csv:
+    os.remove('..\\resources\\username.csv')
+    # remove_xlsx:
+    os.remove('..\\tests\\Financial Sample.xlsx')
 
 
 '''Create ZIP file and add files to it'''
@@ -67,9 +70,10 @@ def download_files(set_browser):
 @pytest.fixture
 def create_zip(download_files):
     current_dir = os.path.dirname(__file__)
+    path_xlsx = os.path.abspath('Financial Sample.xlsx')
     path_files = os.path.join(current_dir, '..', 'resources')
     file_dir = os.listdir(path_files)
-    path_xlsx = os.path.abspath('Financial Sample.xlsx')
+
 
     with zipfile.ZipFile('..\\resources\\myZip.zip', mode='w', compression=zipfile.ZIP_DEFLATED) as my_zip:
         for files in file_dir:
@@ -80,4 +84,5 @@ def create_zip(download_files):
         add_zip.write(path_xlsx, basename(path_xlsx))
 
     yield create_zip
-    remove_zip = os.remove('..\\resources\\myZip.zip')
+    # remove_zip
+    os.remove('..\\resources\\myZip.zip')

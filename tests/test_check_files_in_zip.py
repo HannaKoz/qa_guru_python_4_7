@@ -6,11 +6,12 @@ import PyPDF2
 from openpyxl.reader.excel import load_workbook
 
 
-def test_zip_files(open_zip):
+def test_zip_files():
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         files_list = list(my_zip.namelist())
         print(files_list)
-        print(my_zip.infolist())
+        for files in my_zip.infolist():
+            print(f"{files.filename},\t {files.compress_type},\t {files.file_size},\t {files.compress_size}")
         assert 'dummy.pdf' in files_list
         assert 'username.csv' in files_list
         assert 'Financial Sample.xlsx' in files_list
