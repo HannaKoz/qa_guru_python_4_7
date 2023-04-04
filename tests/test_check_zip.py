@@ -1,8 +1,8 @@
+import csv
 import os
 from zipfile import ZipFile
 
 import PyPDF2
-import csv
 from openpyxl.reader.excel import load_workbook
 
 
@@ -57,5 +57,3 @@ def test_check_csv():
                     size_csv = csv_file.file_size
                     print(f"File name: {csv_name},\t size:{size_csv}")
             assert size_csv == 176
-
-
