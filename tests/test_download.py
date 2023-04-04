@@ -47,3 +47,6 @@ def test_download_csv():
     browser.element('//a[contains(text(),"Data Set for Username Onboarding")]').click()
     sleep(5)
     print(os.path.abspath(__file__))
+
+# def test_remove_files():
+#     remove_pdf = os.remove('..\\resources\\dummy.pdf')
