@@ -57,13 +57,13 @@ def download_files(set_browser):
     browser.element('//a[contains(text(),"Data Set for Username Onboarding")]').click()
     sleep(5)
 
-    yield download_files
-    # remove_xlsx:
-    os.remove('..\\tests\\Financial Sample.xlsx')
-    # remove_pdf:
-    os.remove('..\\resources\\dummy.pdf')
-    # remove_csv:
-    os.remove('..\\resources\\username.csv')
+    # yield download_files
+    # # remove_xlsx:
+    # os.remove('..\\tests\\Financial Sample.xlsx')
+    # # remove_pdf:
+    # os.remove('..\\resources\\dummy.pdf')
+    # # remove_csv:
+    # os.remove('..\\resources\\username.csv')
 
 
 '''Create ZIP file and add files to it'''
@@ -87,3 +87,19 @@ def create_zip(download_files):
     yield create_zip
     # remove_zip
     os.remove('..\\resources\\myZip.zip')
+
+
+@pytest.fixture
+def create_zip_no_yield(download_files):
+    current_dir = os.path.dirname(__file__)
+    path_xlsx = os.path.abspath('Financial Sample.xlsx')
+    path_files = os.path.join(current_dir, 'resources')
+    file_dir = os.listdir(path_files)
+
+    with zipfile.ZipFile('..\\resources\\myZip.zip', mode='w', compression=zipfile.ZIP_DEFLATED) as my_zip:
+        for files in file_dir:
+            add_files = os.path.join(path_files, files)
+            my_zip.write(add_files, basename(add_files))
+
+    with zipfile.ZipFile('..\\resources\\myZip.zip', mode='a', compression=zipfile.ZIP_DEFLATED) as add_zip:
+        add_zip.write(path_xlsx, basename(path_xlsx))
