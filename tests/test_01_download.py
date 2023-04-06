@@ -12,9 +12,12 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+current_dir = os.path.dirname(__file__)
+download_sours = os.path.abspath(os.path.join(current_dir, '..', 'resources'))
+
 options = webdriver.ChromeOptions()
 prefs = {
-    "download.default_directory": 'C:\\Users\\Hanna\\PycharmProjects\\qa_guru_python_4_7\\resources',
+    "download.default_directory": download_sours, #'C:\\Users\\Hanna\\PycharmProjects\\qa_guru_python_4_7\\resources',
     "download.prompt_for_download": False
 }
 options.add_experimental_option("prefs", prefs)
@@ -24,7 +27,7 @@ browser.config.driver = driver
 
 '''Настройки для скачивания напрямую с web. Файлы сохраняются в проект в папку с файлом теста'''
 
-url_pdf = "https://file-examples.com/storage/fef89aabc36429826928b9c/2017/10/file-example_PDF_1MB.pdf"
+url_pdf = "https://bugs.python.org/file47781/Tutorial_EDIT.pdf"
 url_xlsx = "https://go.microsoft.com/fwlink/?LinkID=521962"
 url_csv = "https://support.staffbase.com/hc/en-us/articles/360007108391-CSV-File-Examples"
 
