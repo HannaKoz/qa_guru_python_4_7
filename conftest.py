@@ -18,9 +18,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 @pytest.fixture
 def set_browser():
+    current_dir = os.path.dirname(__file__)
+    download_sours = os.path.abspath(os.path.join(current_dir, 'resources'))
     options = webdriver.ChromeOptions()
     prefs = {
-        "download.default_directory": 'C:\\Users\\Hanna\\PycharmProjects\\qa_guru_python_4_7\\resources',
+        "download.default_directory": download_sours,
         "download.prompt_for_download": False
     }
     options.add_experimental_option("prefs", prefs)
@@ -31,7 +33,7 @@ def set_browser():
 
 '''Настройки для скачивания напрямую с web. Файлы сохраняются в проект в папку с файлом теста'''
 
-url_pdf = "https://file-examples.com/storage/fef89aabc36429826928b9c/2017/10/file-example_PDF_1MB.pdf"
+url_pdf = "https://bugs.python.org/file47781/Tutorial_EDIT.pdf"
 url_xlsx = "https://go.microsoft.com/fwlink/?LinkID=521962"
 url_csv = "https://support.staffbase.com/hc/en-us/articles/360007108391-CSV-File-Examples"
 
@@ -43,7 +45,7 @@ response_csv = requests.get(url_csv, allow_redirects=True)
 @pytest.fixture
 def download_files(set_browser):
     # Download pdf:
-    with open('..\\resources\\dummy.pdf', 'wb') as file_pdf:
+    with open(os.path.abspath('..\\resources\\dummy.pdf'), 'wb') as file_pdf:
         file_pdf.write(response_pdf.content)
 
     # download_xlsx
@@ -56,12 +58,12 @@ def download_files(set_browser):
     sleep(5)
 
     yield download_files
+    # remove_xlsx:
+    os.remove('..\\tests\\Financial Sample.xlsx')
     # remove_pdf:
     os.remove('..\\resources\\dummy.pdf')
     # remove_csv:
     os.remove('..\\resources\\username.csv')
-    # remove_xlsx:
-    os.remove('..\\tests\\Financial Sample.xlsx')
 
 
 '''Create ZIP file and add files to it'''
@@ -71,9 +73,8 @@ def download_files(set_browser):
 def create_zip(download_files):
     current_dir = os.path.dirname(__file__)
     path_xlsx = os.path.abspath('Financial Sample.xlsx')
-    path_files = os.path.join(current_dir, '..', 'resources')
+    path_files = os.path.join(current_dir, 'resources')
     file_dir = os.listdir(path_files)
-
 
     with zipfile.ZipFile('..\\resources\\myZip.zip', mode='w', compression=zipfile.ZIP_DEFLATED) as my_zip:
         for files in file_dir:
