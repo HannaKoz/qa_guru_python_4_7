@@ -2,11 +2,11 @@ import csv
 import os
 from zipfile import ZipFile
 
-import PyPDF2
+from PyPDF2 import PdfReader
 from openpyxl.reader.excel import load_workbook
 
 
-def test_zip_files():
+def test_zip_files(create_zip):
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         files_list = list(my_zip.namelist())
         print(files_list)
@@ -17,21 +17,22 @@ def test_zip_files():
         assert 'Financial Sample.xlsx' in files_list
 
 
-def test_check_pdf():
+def test_check_pdf(create_zip):
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         with my_zip.open('dummy.pdf') as pdf_test:
-            reader = PyPDF2.PdfReader(pdf_test)
+            reader = PdfReader(pdf_test, 'r')
             number_of_pages = len(reader.pages)
             print(f"number of pages: {number_of_pages}")
-            assert number_of_pages is 30
-            text = reader.pages[1].extract_text().__contains__('Aliquam')
+            assert number_of_pages is 155
+            text = reader.pages[144].extract_text().__contains__('Copyright (c) 1991, 2000, 2001 by Lucent '
+                                                                 'Technologies.')
             assert text is True
             text_len = len(reader.pages[6].extract_text())
             print(text_len)
-            assert text_len == 2006
+            assert text_len == 1983
 
 
-def test_check_xlsx():
+def test_check_xlsx(create_zip):
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         with my_zip.open('Financial Sample.xlsx') as xlsx_test:
             book = load_workbook(xlsx_test)
@@ -47,7 +48,7 @@ def test_check_xlsx():
             assert size == 83418
 
 
-def test_check_csv():
+def test_check_csv(create_zip):
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         with my_zip.open('username.csv') as csv_test:
             csv_file = csv.reader(csv_test)
