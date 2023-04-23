@@ -17,7 +17,7 @@ download_sours = os.path.abspath(os.path.join(current_dir, '..', 'resources'))
 
 options = webdriver.ChromeOptions()
 prefs = {
-    "download.default_directory": download_sours, #'C:\\Users\\Hanna\\PycharmProjects\\qa_guru_python_4_7\\resources',
+    "download.default_directory": download_sours,  # 'C:\\Users\\Hanna\\PycharmProjects\\qa_guru_python_4_7\\resources',
     "download.prompt_for_download": False
 }
 options.add_experimental_option("prefs", prefs)
@@ -35,11 +35,25 @@ response_pdf = requests.get(url_pdf, allow_redirects=True)
 response_xlsx = requests.get(url_xlsx, allow_redirects=True)
 response_csv = requests.get(url_csv, allow_redirects=True)
 
+from pathlib import Path
+import way_qa_guru_python_4_7
+
+def project():
+    return Path(way_qa_guru_python_4_7.__file__).parent  # Находит путь где лежит проект
+
+
+def resources():
+    return str(project().joinpath(f'resources/'))  # от проекта находит путь где лежит папка resources/
+
+
+DIR = Path(__file__).parent.parent
+
 
 def test_download_pdf():
-    with open('..\\resources\\dummy.pdf', 'wb') as file_pdf:
+    # current_direct = os.path.dirname(__file__)
+    # download_s = os.path.abspath(os.path.join(DIR, 'resources'))
+    with open(os.path.join(resources(), 'dummy.pdf'), 'wb') as file_pdf:
         file_pdf.write(response_pdf.content)
-
 
 def test_download_xlsx():
     with open('Financial Sample.xlsx', 'wb') as file_xlsx:

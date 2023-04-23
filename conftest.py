@@ -15,14 +15,24 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+from pathlib import Path
+import way_qa_guru_python_4_7
+
+def project():
+    return Path(way_qa_guru_python_4_7.__file__).parent  # Находит путь где лежит проект
+
+
+def resources():
+    return str(project().joinpath(f'resources/'))  # от проекта находит путь где лежит папка resources/
+
 
 @pytest.fixture
 def set_browser():
-    current_dir = os.path.dirname(__file__)
-    download_sours = os.path.abspath(os.path.join(current_dir, 'resources'))
+    # current_dir = os.path.dirname(__file__)
+    # download_sours = os.path.abspath(os.path.join(current_dir, 'resources'))
     options = webdriver.ChromeOptions()
     prefs = {
-        "download.default_directory": download_sours,
+        "download.default_directory": resources(),
         "download.prompt_for_download": False
     }
     options.add_experimental_option("prefs", prefs)
@@ -43,25 +53,31 @@ response_csv = requests.get(url_csv, allow_redirects=True)
 
 
 @pytest.fixture
-def download_files(set_browser):
-    # Download pdf:
-    with open(os.path.abspath('..\\resources\\dummy.pdf'), 'wb') as file_pdf:
+def download_pdf():
+    # current_dir = os.path.dirname(__file__)
+    # download_sours = os.path.abspath(os.path.join(current_dir, 'resources'))
+    with open(os.path.join(resources(), 'dummy.pdf'), 'wb') as file_pdf:
         file_pdf.write(response_pdf.content)
+    # yield download_pdf
+    # # remove_pdf:
+    # os.remove('..\\resources\\dummy.pdf')
 
-    # download_xlsx
+
+@pytest.fixture
+def download_xlsx():
     with open('Financial Sample.xlsx', 'wb') as file_xlsx:
         file_xlsx.write(response_xlsx.content)
+    yield download_xlsx
+    # remove_xlsx:
+    os.remove('..\\tests\\Financial Sample.xlsx')
 
-    # download_csv
+
+@pytest.fixture
+def download_csv(set_browser):
     browser.open(url_csv)
     browser.element('//a[contains(text(),"Data Set for Username Onboarding")]').click()
     sleep(5)
-
-    # yield download_files
-    # # remove_xlsx:
-    # os.remove('..\\tests\\Financial Sample.xlsx')
-    # # remove_pdf:
-    # os.remove('..\\resources\\dummy.pdf')
+    # yield download_csv
     # # remove_csv:
     # os.remove('..\\resources\\username.csv')
 
@@ -70,7 +86,7 @@ def download_files(set_browser):
 
 
 @pytest.fixture
-def create_zip(download_files):
+def create_zip(download_xlsx, download_csv, download_pdf):
     current_dir = os.path.dirname(__file__)
     path_xlsx = os.path.abspath('Financial Sample.xlsx')
     path_files = os.path.join(current_dir, 'resources')
