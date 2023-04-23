@@ -6,7 +6,7 @@ from PyPDF2 import PdfReader
 from openpyxl.reader.excel import load_workbook
 
 
-def test_zip_files(create_zip_no_yield):
+def test_zip_files():
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         files_list = list(my_zip.namelist())
         print(files_list)

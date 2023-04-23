@@ -6,7 +6,8 @@ from PyPDF2 import PdfReader
 from openpyxl.reader.excel import load_workbook
 
 
-def test_zip_files(create_zip):
+def test_zip_files(zip_files):
+    print('Test files:')
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         files_list = list(my_zip.namelist())
         print(files_list)
@@ -15,9 +16,10 @@ def test_zip_files(create_zip):
         assert 'dummy.pdf' in files_list
         assert 'username.csv' in files_list
         assert 'Financial Sample.xlsx' in files_list
+    print('_______')
 
-
-def test_check_pdf(create_zip):
+# def test_check_pdf(zip_files):
+    print('Test pdf:')
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         with my_zip.open('dummy.pdf') as pdf_test:
             reader = PdfReader(pdf_test, 'r')
@@ -30,9 +32,10 @@ def test_check_pdf(create_zip):
             text_len = len(reader.pages[6].extract_text())
             print(text_len)
             assert text_len == 1983
+    print('_______')
 
-
-def test_check_xlsx(create_zip):
+# def test_check_xlsx(zip_files):
+    print('Test xlsx:')
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         with my_zip.open('Financial Sample.xlsx') as xlsx_test:
             book = load_workbook(xlsx_test)
@@ -46,9 +49,10 @@ def test_check_xlsx(create_zip):
                     size = x_file.file_size
                     print(f"{name},\t {size}")
             assert size == 83418
+    print('_______')
 
-
-def test_check_csv(create_zip):
+# def test_check_csv(zip_files):
+    print('Test csv:')
     with ZipFile('..\\resources\\myZip.zip') as my_zip:
         with my_zip.open('username.csv') as csv_test:
             csv_file = csv.reader(csv_test)
