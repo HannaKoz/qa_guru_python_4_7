@@ -18,14 +18,14 @@ path_xlsx = os.path.abspath('Financial Sample.xlsx')
 path_files = os.path.join(os.path.dirname(this_dir), 'resources')
 file_dir = os.listdir(path_files)
 
-def test_zip_files(download_pdf, download_csv):
+def test_zip_files():
     with zipfile.ZipFile('..\\resources\\myZip.zip', mode='w', compression=zipfile.ZIP_DEFLATED) as my_zip:
         for files in file_dir:
             add_files = os.path.join(path_files, files)
             my_zip.write(add_files, basename(add_files))
 
 
-def test_add_zip_file(download_xlsx):
+def test_add_zip_file():
     with zipfile.ZipFile('..\\resources\\myZip.zip', mode='a', compression=zipfile.ZIP_DEFLATED) as add_zip:
         add_zip.write(path_xlsx, basename(path_xlsx))
 
@@ -34,3 +34,4 @@ def test_add_zip_file(download_xlsx):
 
 def test1():
     print(path_files)
+    print(resources())
